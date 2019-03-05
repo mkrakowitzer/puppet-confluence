@@ -345,6 +345,10 @@ paramater can be used to shut down confluence for upgrades. Defaults to
 
 Enable external facts for confluence version. Defaults to present.
 
+##### `systemd_module`
+
+Choose which systemd module you'd like to use to control the Confluence service. Defaults to 'camptocamp'.
+
 ## Limitations
 
 * Puppet 4.10.0

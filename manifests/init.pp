@@ -61,6 +61,7 @@ class confluence (
   $session_lastvalidation                                        = 'session.lastvalidation',
   $proxy_server                                                  = undef,
   $proxy_type                                                    = undef,
+  $systemd_module                                                = 'camptocamp',
 ) inherits confluence::params {
 
   Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
