@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## v5.0.0 (2020-07-xx)
+
+[Full Changelog]
+
+**Breaking changes:**
+
+- drop support for deprecated puppet/staging module
+
 ## [v4.0.0](https://github.com/voxpupuli/puppet-confluence/tree/v4.0.0) (2020-05-09)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-confluence/compare/v3.2.0...v4.0.0)

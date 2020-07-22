@@ -27,8 +27,6 @@ class confluence (
   # Misc Settings
   $download_url                                                  = 'https://www.atlassian.com/software/confluence/downloads/binary',
   $checksum                                                      = undef,
-  # Choose whether to use puppet-staging, or puppet-archive
-  $deploy_module                                                 = 'archive',
   # Manage confluence server
   $manage_service                                                = true,
   # Tomcat Tunables

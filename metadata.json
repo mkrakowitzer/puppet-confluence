@@ -18,10 +18,6 @@
       "version_requirement": ">= 1.0.0 < 5.0.0"
     },
     {
-      "name": "puppet/staging",
-      "version_requirement": ">= 2.0.1 < 4.0.0"
-    },
-    {
       "name": "puppet/mysql_java_connector",
       "version_requirement": ">= 3.0.2 < 4.0.0"
     },

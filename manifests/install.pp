@@ -46,54 +46,27 @@ class confluence::install {
     }
   }
 
-  case $confluence::deploy_module {
-    'staging': {
-      require staging
-      staging::file { $file:
-        source  => "${confluence::download_url}/${file}",
-        timeout => 1800,
-      }
-      -> staging::extract { $file:
-        target  => $confluence::webappdir,
-        creates => "${confluence::webappdir}/conf",
-        strip   => 1,
-        user    => $confluence::user,
-        group   => $confluence::group,
-        notify  => Exec["chown_${confluence::webappdir}"],
-        before  => File[$confluence::homedir],
-        require => [
-          File[$confluence::installdir],
-          User[$confluence::user],
-          File[$confluence::webappdir] ],
-      }
-    }
-    'archive': {
-      archive { "/tmp/${file}":
-        ensure          => present,
-        extract         => true,
-        extract_command => 'tar xfz %s --strip-components=1',
-        extract_path    => $confluence::webappdir,
-        source          => "${confluence::download_url}/${file}",
-        creates         => "${confluence::webappdir}/conf",
-        cleanup         => true,
-        checksum_verify => $confluence::checksum_verify,
-        checksum_type   => 'md5',
-        checksum        => $confluence::checksum,
-        user            => $confluence::user,
-        group           => $confluence::group,
-        proxy_server    => $confluence::proxy_server,
-        proxy_type      => $confluence::proxy_type,
-        before          => File[$confluence::homedir],
-        require         => [
-          File[$confluence::installdir],
-          File[$confluence::webappdir],
-          User[$confluence::user],
-        ],
-      }
-    }
-    default: {
-      fail('deploy_module parameter must equal "archive" or "staging"')
-    }
+  archive { "/tmp/${file}":
+    ensure          => present,
+    extract         => true,
+    extract_command => 'tar xfz %s --strip-components=1',
+    extract_path    => $confluence::webappdir,
+    source          => "${confluence::download_url}/${file}",
+    creates         => "${confluence::webappdir}/conf",
+    cleanup         => true,
+    checksum_verify => $confluence::checksum_verify,
+    checksum_type   => 'md5',
+    checksum        => $confluence::checksum,
+    user            => $confluence::user,
+    group           => $confluence::group,
+    proxy_server    => $confluence::proxy_server,
+    proxy_type      => $confluence::proxy_type,
+    before          => File[$confluence::homedir],
+    require         => [
+      File[$confluence::installdir],
+      File[$confluence::webappdir],
+      User[$confluence::user],
+    ],
   }
 
   file { [ $confluence::homedir, "${confluence::homedir}/logs" ]:
