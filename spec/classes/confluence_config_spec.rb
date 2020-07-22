@@ -159,6 +159,36 @@ describe 'confluence' do
               with_content(%r{CATALINA_OPTS=\"-Dconfluence.cluster.node.name=myhostname \${CATALINA_OPTS}\"})
           end
         end
+
+        context 'manage_user set to true' do
+          let(:params) do
+            {
+              version: '6.12.0',
+              javahome: '/opt/java',
+              manage_user: true
+            }
+          end
+
+          it do
+            is_expected.to compile.with_all_deps
+            is_expected.to contain_user('confluence').that_notifies('Exec[chown_/opt/confluence/atlassian-confluence-6.12.0]')
+          end
+        end
+
+        context 'manage_user set to false' do
+          let(:params) do
+            {
+              version: '6.12.0',
+              javahome: '/opt/java',
+              manage_user: false
+            }
+          end
+
+          it do
+            is_expected.to compile.with_all_deps
+            is_expected.not_to contain_user('confluence')
+          end
+        end
       end
     end
   end

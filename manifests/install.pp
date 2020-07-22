@@ -63,8 +63,10 @@ class confluence::install {
         before  => File[$confluence::homedir],
         require => [
           File[$confluence::installdir],
-          User[$confluence::user],
           File[$confluence::webappdir] ],
+      }
+      if $confluence::manage_user {
+        User[$confluence::user] -> Staging::Extract[$file]
       }
     }
     'archive': {
@@ -87,8 +89,10 @@ class confluence::install {
         require         => [
           File[$confluence::installdir],
           File[$confluence::webappdir],
-          User[$confluence::user],
         ],
+      }
+      if $confluence::manage_user {
+        User[$confluence::user] -> Archive["/tmp/${file}"]
       }
     }
     default: {
@@ -104,6 +108,8 @@ class confluence::install {
   -> exec { "chown_${confluence::webappdir}":
     command     => "/bin/chown -R ${confluence::user}:${confluence::group} ${confluence::webappdir}",
     refreshonly => true,
-    subscribe   => User[$confluence::user],
+  }
+  if $confluence::manage_user{
+    User[$confluence::user] ~> Exec["chown_${confluence::webappdir}"]
   }
 }
