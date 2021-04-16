@@ -14,10 +14,6 @@
       "version_requirement": ">= 1.0.0 < 3.0.0"
     },
     {
-      "name": "puppet/archive",
-      "version_requirement": ">= 1.0.0 < 5.0.0"
-    },
-    {
       "name": "puppet/staging",
       "version_requirement": ">= 2.0.1 < 4.0.0"
     },
@@ -28,6 +24,10 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.13.1 < 7.0.0"
+    },
+    {
+      "name": "puppet/archive",
+      "version_requirement": ">= 1.0.0 < 6.0.0"
     }
   ],
   "requirements": [
