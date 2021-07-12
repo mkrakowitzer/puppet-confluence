@@ -1,3 +1,3 @@
 ---
-.travis.yml:
-  secure: "bca3Ebj/IE9a1X/BpLPVpMYw/zx9VkFRp1WjQZ437jYnpjyl2M/bC1cyW/A7TnzPX7WOpemT5+CVlVF/WE6f0Hrn6EqSzNwrVF8HOkGD8LqVLopXkaEn1zjcrhF4uMaleDpnNxQUx9nMAnqksiw2xphF1yxABqMt3l42SV7ajVw="
+spec/spec_helper_acceptance.rb:
+  unmanaged: false

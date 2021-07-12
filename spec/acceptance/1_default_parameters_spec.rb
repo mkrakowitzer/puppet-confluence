@@ -2,41 +2,26 @@ require 'spec_helper_acceptance'
 
 # It is sometimes faster to host confluence / java files on a local webserver.
 # Set environment variable download_url to use local webserver
-# export download_url = 'http://10.0.0.XXX/'
-download_url = ENV['download_url'] if ENV['download_url']
-download_url = if ENV['download_url']
-                 ENV['download_url']
-               else
-                 'undef'
-               end
-java_url = if download_url == 'undef'
-             'http://download.oracle.com/otn-pub/java/jdk/7u71-b14/'
-           else
-             download_url
-           end
+# export BEAKER_FACTER_DOWNLOAD_URL = 'http://10.0.0.XXX/'
 
-describe 'confluence', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
+describe 'confluence' do
   it 'installs with defaults' do
     pp = <<-EOS
-      $jh = $osfamily ? {
-        default   => '/opt/java',
-      }
-      if versioncmp($::puppetversion,'3.6.1') >= 0 {
-        $allow_virtual_packages = hiera('allow_virtual_packages',false)
-        Package {
-          allow_virtual => $allow_virtual_packages,
-        }
+      $jh = '/opt/java'
+      $allow_virtual_packages = hiera('allow_virtual_packages',false)
+      Package {
+        allow_virtual => $allow_virtual_packages,
       }
       deploy::file { 'jdk-7u71-linux-x64.tar.gz':
         target          => $jh,
         fetch_options   => '-q -c --header "Cookie: oraclelicense=accept-securebackup-cookie"',
-        url             => #{java_url},
+        url             => pick(fact('download_url'), 'http://download.oracle.com/otn-pub/java/jdk/7u71-b14/'),
         download_timout => 1800,
         strip           => true,
       } ->
       class { 'confluence':
         version             => '5.5.6',
-        download_url        => #{download_url},
+        download_url        => fact('download_url'),
         javahome            => $jh,
       }
     EOS

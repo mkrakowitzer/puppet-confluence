@@ -2,29 +2,19 @@ require 'spec_helper_acceptance'
 
 # It is sometimes faster to host confluence / java files on a local webserver.
 # Set environment variable download_url to use local webserver
-# export download_url = 'http://10.0.0.XXX/'
-download_url = ENV['download_url'] if ENV['download_url']
-download_url = if ENV['download_url']
-                 ENV['download_url']
-               else
-                 'undef'
-               end
+# export BEAKER_FACTER_DOWNLOAD_URL = 'http://10.0.0.XXX/'
 
-describe 'confluence', unless: UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
+describe 'confluence' do
   it 'upgrades with defaults' do
     pp = <<-EOS
-      $jh = $osfamily ? {
-        default   => '/opt/java',
-      }
-      if versioncmp($::puppetversion,'3.6.1') >= 0 {
-        $allow_virtual_packages = hiera('allow_virtual_packages',false)
-        Package {
-          allow_virtual => $allow_virtual_packages,
-        }
+      $jh = '/opt/java'
+      $allow_virtual_packages = hiera('allow_virtual_packages',false)
+      Package {
+        allow_virtual => $allow_virtual_packages,
       }
       class { 'confluence':
         version             => '5.7',
-        download_url        => #{download_url},
+        download_url        => fact('download_url'),
         javahome            => $jh,
       }
     EOS
